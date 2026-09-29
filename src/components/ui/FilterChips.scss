@@ -1,0 +1,53 @@
+@use '../../styles/mixins' as *;
+
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+
+  &__option {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.5rem;
+    padding: 0.45rem 0.95rem;
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    background: var(--frame);
+    color: var(--ink-2);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease;
+
+    @include hover {
+      border-color: var(--ink-3);
+      color: var(--ink);
+    }
+
+    &[aria-pressed='true'] {
+      border-color: var(--select);
+      background: var(--select);
+      color: var(--on-select);
+    }
+  }
+
+  &__count {
+    min-width: 1.4rem;
+    padding: 0 0.35rem;
+    border-radius: 999px;
+    background: var(--frame-2);
+    color: var(--ink-3);
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+    line-height: 1.4rem;
+  }
+
+  &__option[aria-pressed='true'] &__count {
+    background: rgba(255, 255, 255, 0.2);
+    color: inherit;
+  }
+}

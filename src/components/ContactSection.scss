@@ -1,0 +1,172 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.contact {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(2.5rem, 6vw, 4rem);
+
+  @include up(lg) {
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    align-items: end;
+  }
+
+  &__intro {
+    display: grid;
+    justify-items: start;
+    gap: 1.25rem;
+  }
+
+  &__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--inverse-2);
+    font-size: var(--fs-s);
+    font-weight: 500;
+  }
+
+  &__title {
+    @include display-type;
+    font-size: var(--fs-hero);
+    max-width: 11ch;
+    text-wrap: balance;
+  }
+
+  &__lead {
+    max-width: 34ch;
+    color: var(--inverse-2);
+    font-size: var(--fs-l);
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+
+    @include down(sm) {
+      align-self: stretch;
+      width: 100%;
+
+      .btn {
+        flex: 1 1 100%;
+      }
+    }
+  }
+
+  &__channels {
+    display: grid;
+    border-top: 1px solid var(--inverse-line);
+  }
+
+  &__details {
+    min-width: 0;
+  }
+
+  &__status {
+    min-height: 1.5rem;
+    margin-top: 0.75rem;
+    color: var(--inverse-2);
+    font-size: var(--fs-s);
+  }
+}
+
+.channel {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.65rem, 3vw, 1rem);
+  min-height: 4.5rem;
+  padding-block: 0.9rem;
+  border-bottom: 1px solid var(--inverse-line);
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid var(--inverse-line);
+    border-radius: 50%;
+    color: var(--inverse-ink);
+
+    .icon {
+      width: 1.1rem;
+      height: 1.1rem;
+    }
+  }
+
+  &__body {
+    display: grid;
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__label {
+    color: var(--inverse-2);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  &__value {
+    display: block;
+    justify-self: start;
+    max-width: 100%;
+    color: var(--inverse-ink);
+    font-size: var(--fs-base);
+    font-weight: 500;
+    text-decoration: none;
+
+    @media (max-width: 359.98px) {
+      font-size: var(--fs-s);
+    }
+
+    overflow-wrap: break-word;
+    background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0% 1px;
+    transition: background-size 0.35s $ease-out;
+
+    @include hover {
+      background-size: 100% 1px;
+    }
+
+    &--pending {
+      color: var(--inverse-2);
+      font-style: italic;
+      font-weight: 400;
+    }
+  }
+
+  &__external {
+    display: inline-block;
+    width: 0.95em;
+    height: 0.95em;
+    margin-left: 0.3em;
+    vertical-align: -0.08em;
+  }
+
+  &__action {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid var(--inverse-line);
+    border-radius: var(--radius-s);
+    background: transparent;
+    color: var(--inverse-ink);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    .icon {
+      width: 1.1rem;
+      height: 1.1rem;
+    }
+
+    @include hover {
+      background: var(--inverse-line);
+    }
+  }
+}

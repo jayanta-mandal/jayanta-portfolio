@@ -1,0 +1,115 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.principles {
+  display: grid;
+  gap: 1rem;
+
+  @include up(md) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @include up(lg) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.principle {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+
+  @include up(md) {
+    min-height: 13rem;
+  }
+
+  padding: clamp(1.25rem, 2.5vw, 1.75rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  background: var(--frame-2);
+  transition:
+    transform 0.45s $ease-out,
+    border-color 0.3s ease,
+    box-shadow 0.45s ease;
+
+  @include hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--select) 45%, var(--line));
+    box-shadow: var(--shadow-1);
+
+    .principle__icon {
+      background: var(--select);
+      color: var(--on-select);
+      transform: rotate(-6deg);
+    }
+  }
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-bottom: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-s);
+    background: var(--frame);
+    color: var(--select);
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease,
+      transform 0.45s $ease-out;
+
+    .icon {
+      width: 1.35rem;
+      height: 1.35rem;
+    }
+  }
+
+  &__title {
+    padding-top: clamp(0.75rem, 2vw, 1.75rem);
+    font-size: var(--fs-l);
+    letter-spacing: -0.01em;
+  }
+
+  &__text {
+    color: var(--ink-2);
+    font-size: var(--fs-s);
+    max-width: 34ch;
+  }
+
+  &--lead {
+    @include up(md) {
+      grid-column: span 2;
+    }
+
+    .principle__title {
+      font-size: var(--fs-xl);
+    }
+
+    .principle__text {
+      font-size: var(--fs-base);
+    }
+  }
+
+  // A measuring ruler: precision drawn literally.
+  &__ruler {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    height: 0.9rem;
+    margin-top: 1rem;
+    border-bottom: 1px solid var(--redline);
+
+    span {
+      width: 1px;
+      height: 35%;
+      background: var(--redline);
+      opacity: 0.6;
+
+      &.is-major {
+        height: 100%;
+        opacity: 1;
+      }
+    }
+  }
+}

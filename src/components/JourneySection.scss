@@ -1,0 +1,186 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+// Two columns on small screens (node, card) and three on large (years, node, card).
+$when-col: 10rem;
+$node-col: 2.5rem;
+
+.timeline {
+  --progress: 0;
+  --node-x: calc(#{$node-col} / 2);
+  position: relative;
+
+  @include up(lg) {
+    --node-x: calc(#{$when-col} + #{$node-col} / 2);
+  }
+
+  &__track {
+    position: absolute;
+    top: 0.75rem;
+    bottom: 0.75rem;
+    left: var(--node-x);
+    width: 2px;
+    margin-left: -1px;
+    border-radius: 2px;
+    background: var(--line);
+    overflow: hidden;
+  }
+
+  &__fill {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(var(--select), var(--component));
+    transform: scaleY(var(--progress));
+    transform-origin: top;
+  }
+
+  &__list {
+    display: grid;
+    gap: clamp(1.25rem, 3vw, 2rem);
+  }
+}
+
+.tl-item {
+  display: grid;
+  grid-template-columns: $node-col minmax(0, 1fr);
+  grid-template-areas:
+    'node when'
+    'node card';
+  row-gap: 0.6rem;
+
+  @include up(lg) {
+    grid-template-columns: $when-col $node-col minmax(0, 1fr);
+    grid-template-areas: 'when node card';
+    row-gap: 0;
+  }
+
+  &__when {
+    grid-area: when;
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+
+    @include up(lg) {
+      flex-direction: column;
+      gap: 0.25rem;
+      padding-top: 1.35rem;
+    }
+  }
+
+  &__index {
+    color: var(--ink-3);
+    font-size: var(--fs-xs);
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__years {
+    color: var(--ink-2);
+    font-family: var(--font-display);
+    font-size: var(--fs-l);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+
+  &__node {
+    grid-area: node;
+    position: relative;
+    justify-self: center;
+    width: 0.85rem;
+    height: 0.85rem;
+    margin-top: 0.45rem;
+    border: 2px solid var(--line-2);
+    border-radius: 50%;
+    background: var(--frame);
+    transition:
+      border-color 0.4s ease,
+      background-color 0.4s ease,
+      box-shadow 0.4s ease;
+
+    @include up(lg) {
+      margin-top: 1.7rem;
+    }
+  }
+
+  &.is-reached &__node {
+    border-color: var(--select);
+    background: var(--select);
+    box-shadow: 0 0 0 5px var(--select-soft);
+  }
+
+  &--current &__years {
+    color: var(--select);
+  }
+}
+
+.tl-card {
+  grid-area: card;
+  position: relative;
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  background: var(--frame);
+  transition:
+    border-color 0.3s ease,
+    transform 0.4s $ease-out;
+
+  @include hover {
+    border-color: var(--line-2);
+  }
+
+  &__role {
+    font-size: var(--fs-xl);
+    letter-spacing: -0.02em;
+  }
+
+  &__company {
+    margin-top: 0.3rem;
+    font-weight: 550;
+  }
+
+  &__dates,
+  &__payroll {
+    color: var(--ink-3);
+    font-size: var(--fs-s);
+  }
+
+  &__dates {
+    margin-top: 0.15rem;
+  }
+
+  &__focus {
+    margin-top: 1.25rem;
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.9rem;
+    color: var(--success);
+    font-size: var(--fs-s);
+    font-weight: 600;
+  }
+
+  // The current role is drawn as the selected layer.
+  .tl-item--current & {
+    border: 1.5px solid var(--select);
+    background: linear-gradient(var(--select-soft), var(--select-soft)), var(--frame);
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: -5px;
+      pointer-events: none;
+      @include corner-handles(8px, var(--select));
+    }
+
+    .tl-card__role {
+      font-size: var(--fs-2xl);
+    }
+
+    .tag {
+      border-color: color-mix(in srgb, var(--select) 30%, transparent);
+    }
+  }
+}

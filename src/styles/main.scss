@@ -1,0 +1,275 @@
+@use 'reset';
+@use 'animations';
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ---------------------------------------------------------------------------
+// Design tokens
+// Colours come from the vocabulary of design tools: a neutral canvas, white
+// frames, selection blue, component violet and measurement red.
+// ---------------------------------------------------------------------------
+
+@mixin dark-tokens {
+  --canvas: #1c1d22;
+  --canvas-dot: rgba(236, 238, 243, 0.055);
+  --frame: #25262c;
+  --frame-2: #2d2f36;
+  --ink: #eceef3;
+  --ink-2: #b6bbc8;
+  --ink-3: #9197a7;
+  --line: rgba(236, 238, 243, 0.1);
+  --line-2: rgba(236, 238, 243, 0.2);
+  --select: #7894ff;
+  --select-soft: rgba(120, 148, 255, 0.14);
+  --on-select: #0c1233;
+  --component: #ab99ff;
+  --component-soft: rgba(171, 153, 255, 0.14);
+  --redline: #ff7090;
+  --redline-soft: rgba(255, 112, 144, 0.1);
+  --success: #3fd095;
+  --code-bg: #111320;
+  --code-ink: #d9ddea;
+  --inverse-bg: #dfe5ff;
+  --inverse-ink: #0e1a55;
+  --inverse-2: #34407a;
+  --inverse-line: rgba(14, 26, 85, 0.16);
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 30px -16px rgba(0, 0, 0, 0.7);
+  --shadow-2: 0 2px 6px rgba(0, 0, 0, 0.35), 0 30px 60px -28px rgba(0, 0, 0, 0.85);
+  --p-blue: #7894ff;
+  --p-violet: #ab99ff;
+  --p-teal: #3cc8b4;
+  --p-rose: #ff7090;
+  --p-indigo: #8f8cff;
+  --p-green: #4fd08a;
+  color-scheme: dark;
+}
+
+:root {
+  --canvas: #eceef1;
+  --canvas-dot: rgba(22, 26, 38, 0.07);
+  --frame: #ffffff;
+  --frame-2: #f5f6f8;
+  --ink: #161a26;
+  --ink-2: #474e61;
+  --ink-3: #626a7e;
+  --line: rgba(22, 26, 38, 0.1);
+  --line-2: rgba(22, 26, 38, 0.2);
+  --select: #2b59ff;
+  --select-soft: rgba(43, 89, 255, 0.08);
+  --on-select: #ffffff;
+  --component: #7b61ff;
+  --component-soft: rgba(123, 97, 255, 0.1);
+  --redline: #e0224e;
+  --redline-soft: rgba(224, 34, 78, 0.07);
+  --success: #12a06c;
+  --code-bg: #12162a;
+  --code-ink: #d9ddea;
+  --inverse-bg: #102067;
+  --inverse-ink: #f3f5ff;
+  --inverse-2: #bac4f3;
+  --inverse-line: rgba(243, 245, 255, 0.16);
+  --shadow-1: 0 1px 2px rgba(22, 26, 38, 0.06), 0 12px 28px -16px rgba(22, 26, 38, 0.22);
+  --shadow-2: 0 2px 6px rgba(22, 26, 38, 0.06), 0 30px 60px -30px rgba(22, 26, 38, 0.35);
+  --p-blue: #2b59ff;
+  --p-violet: #7b61ff;
+  --p-teal: #0f9483;
+  --p-rose: #e0224e;
+  --p-indigo: #4338ca;
+  --p-green: #16873f;
+
+  --font-display: 'Bricolage Grotesque', 'Avenir Next', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  --font-code: 'Geist Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  // Type scale: a 1.25 ratio stretched fluidly between mobile and desktop.
+  --fs-xs: 0.75rem;
+  --fs-s: 0.875rem;
+  --fs-base: clamp(1rem, 0.96rem + 0.18vw, 1.0625rem);
+  --fs-l: clamp(1.125rem, 1.05rem + 0.35vw, 1.3125rem);
+  --fs-xl: clamp(1.375rem, 1.2rem + 0.75vw, 1.875rem);
+  --fs-2xl: clamp(1.75rem, 1.35rem + 1.8vw, 2.75rem);
+  --fs-3xl: clamp(2.25rem, 1.5rem + 3.4vw, 4.5rem);
+  --fs-hero: clamp(2.6rem, 1.3rem + 5.2vw, 6rem);
+
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --frame-pad: clamp(1.5rem, 5vw, 4.5rem);
+  --radius-s: 6px;
+  --radius-m: 12px;
+  --radius-l: 20px;
+
+  color-scheme: light;
+
+  // Keep content clear of translucent system bars on notched phones.
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    @include dark-tokens;
+  }
+}
+
+:root[data-theme='dark'] {
+  @include dark-tokens;
+}
+
+// ---------------------------------------------------------------------------
+// Base
+// ---------------------------------------------------------------------------
+
+html {
+  scroll-padding-top: calc(env(safe-area-inset-top, 0px) + #{$header-height} + 16px);
+}
+
+@include motion-ok {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  background-color: var(--canvas);
+  background-image: radial-gradient(var(--canvas-dot) 1px, transparent 1.3px);
+  background-size: 22px 22px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--select);
+  color: var(--on-select);
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus, var(--select));
+  outline-offset: 3px;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+}
+
+a {
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+}
+
+main:focus {
+  outline: none;
+}
+
+@include reduced-motion {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Layout primitives
+// ---------------------------------------------------------------------------
+
+.container {
+  width: 100%;
+  max-width: calc(#{$container-max} + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.visually-hidden {
+  @include visually-hidden;
+}
+
+.skip-link {
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 0px) + 0.75rem);
+  left: 0.75rem;
+  z-index: $z-skip;
+  padding: 0.7rem 1rem;
+  border-radius: var(--radius-s);
+  background: var(--select);
+  color: var(--on-select);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-200%);
+  transition: transform 0.2s $ease-out;
+
+  &:focus-visible {
+    transform: none;
+    outline-color: var(--ink);
+  }
+}
+
+// Shared list and chip styles used by several sections.
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.9rem;
+  padding: 0.25rem 0.7rem;
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  background: var(--frame);
+  color: var(--ink-2);
+  font-size: 0.8125rem;
+  line-height: 1.3;
+}
+
+// Bullets drawn as the component diamond: every item is a reusable piece.
+.diamond-list {
+  display: grid;
+  gap: 0.65rem;
+
+  li {
+    position: relative;
+    padding-left: 1.35rem;
+    color: var(--ink-2);
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0.1rem;
+      top: 0.62em;
+      width: 0.45rem;
+      height: 0.45rem;
+      background: var(--component);
+      transform: rotate(45deg);
+    }
+  }
+}
+
+.status-dot {
+  display: inline-block;
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--success);
+  animation: pulse-ring 2.4s ease-out infinite;
+}

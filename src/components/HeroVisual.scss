@@ -1,0 +1,616 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+// All geometry inside the stage is in em, and the stage font size follows the
+// container width, so the composition scales as one piece on every screen.
+
+.hv {
+  position: relative;
+  width: 100%;
+  max-width: 35rem;
+  margin-inline: auto;
+  container-type: inline-size;
+
+  &__stage {
+    position: relative;
+    aspect-ratio: 10 / 11;
+    font-size: max(7.5px, 2.3cqi);
+    line-height: 1.4;
+  }
+
+  // Layout grid behind the composition.
+  &__grid {
+    position: absolute;
+    inset: 0 2%;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 3%;
+
+    span {
+      background: var(--redline-soft);
+      border-radius: 0.2em;
+    }
+  }
+
+  &__links {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  &__link {
+    fill: none;
+    stroke: var(--line-2);
+    stroke-width: 1.5;
+    stroke-dasharray: 4 4;
+    vector-effect: non-scaling-stroke;
+    transition: stroke 0.4s ease;
+
+    &.is-live {
+      stroke: var(--select);
+    }
+  }
+
+  // Controls ----------------------------------------------------------------
+
+  &__controls {
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  &__steps {
+    display: grid;
+    flex: 1;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+  }
+
+  &__toggle {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    color: var(--ink-2);
+    transition:
+      color 0.2s ease,
+      border-color 0.2s ease;
+
+    .icon {
+      width: 0.95rem;
+      height: 0.95rem;
+    }
+
+    @include hover {
+      color: var(--select);
+      border-color: var(--select);
+    }
+  }
+
+  &__caption {
+    min-height: 3.2em;
+    margin-top: 0.75rem;
+    color: var(--ink-2);
+    font-size: var(--fs-s);
+  }
+}
+
+.hv-step {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 0.5rem;
+  row-gap: 0.55rem;
+  align-items: baseline;
+  padding-top: 0.1rem;
+  color: var(--ink-3);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: left;
+  transition: color 0.2s ease;
+
+  @include hover {
+    color: var(--ink);
+  }
+
+  &[aria-pressed='true'] {
+    color: var(--ink);
+  }
+
+  &__track {
+    position: relative;
+    grid-column: 1 / -1;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--line-2);
+    overflow: hidden;
+  }
+
+  &__fill {
+    position: absolute;
+    inset: 0;
+    background: var(--select);
+    transform-origin: left center;
+  }
+
+  &__num {
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.hv.is-autoplay .hv-step__fill {
+  animation: hv-progress var(--stage-duration) linear both;
+}
+
+.hv.is-held .hv-step__fill {
+  animation-play-state: paused;
+}
+
+// Panels ------------------------------------------------------------------
+
+.hv-panel {
+  --scale: 0.955;
+  position: absolute;
+  z-index: 1;
+  overflow: hidden;
+  border: 1px solid var(--line-2);
+  border-radius: 0.9em;
+  background: var(--frame);
+  box-shadow: var(--shadow-1);
+  translate: calc(var(--px, 0) * var(--depth, 10) * 1px) calc(var(--py, 0) * var(--depth, 10) * 1px);
+  scale: var(--scale);
+  filter: saturate(0.55);
+  transition:
+    scale 0.7s $ease-out,
+    filter 0.5s ease,
+    box-shadow 0.5s ease;
+
+  &.is-active {
+    --scale: 1;
+    z-index: 4;
+    filter: none;
+    box-shadow: var(--shadow-2);
+  }
+
+  &__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5em;
+    padding: 0.65em 0.9em;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink-2);
+    font-size: 0.9em;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  &--design {
+    top: 5%;
+    left: 0;
+    width: 58%;
+  }
+
+  &--code {
+    top: 23%;
+    right: 0;
+    z-index: 2;
+    width: 62%;
+    border-color: transparent;
+    background: var(--code-bg);
+
+    .hv-panel__bar {
+      border-bottom-color: rgba(255, 255, 255, 0.08);
+      color: rgba(217, 221, 234, 0.55);
+    }
+  }
+
+  &--render {
+    bottom: 3%;
+    left: 9%;
+    z-index: 3;
+    width: 56%;
+  }
+}
+
+.hv-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0.15em 0.6em;
+  border-radius: 999px;
+  background: var(--select-soft);
+  color: var(--select);
+  font-size: 0.82em;
+
+  i {
+    width: 0.45em;
+    height: 0.45em;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  &--live {
+    background: color-mix(in srgb, var(--success) 12%, transparent);
+    color: var(--success);
+  }
+}
+
+// Design panel: wireframe with redlines ----------------------------------
+
+.hv-design {
+  padding: 1.6em;
+  background-image: radial-gradient(var(--canvas-dot) 1px, transparent 1.2px);
+  background-size: 1.1em 1.1em;
+}
+
+.wf-card {
+  position: relative;
+  display: grid;
+  gap: 1em;
+  padding: 1.5em;
+  border: 1px dashed var(--line-2);
+  border-radius: 0.75em;
+  background: var(--frame);
+}
+
+.wf-avatar {
+  width: 3em;
+  height: 3em;
+  border: 1px solid var(--line-2);
+  border-radius: 50%;
+  background: repeating-linear-gradient(45deg, var(--line) 0 1.5px, transparent 1.5px 5px);
+}
+
+.wf-lines {
+  display: grid;
+  gap: 0.5em;
+}
+
+.wf-line {
+  height: 0.75em;
+  border-radius: 0.4em;
+  background: var(--line-2);
+
+  &--thin {
+    height: 0.6em;
+    background: var(--line);
+  }
+}
+
+.wf-chips {
+  display: flex;
+  gap: 0.4em;
+
+  span {
+    width: 3.6em;
+    height: 1.55em;
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+  }
+}
+
+.wf-button {
+  height: 2.6em;
+  border: 1.5px solid var(--line-2);
+  border-radius: 0.55em;
+}
+
+.hv-select {
+  position: absolute;
+  top: 1.5em;
+  left: 1.5em;
+  width: 3em;
+  height: 3em;
+  outline: 1px solid var(--select);
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    @include corner-handles(5px, var(--select));
+  }
+
+  &__size {
+    position: absolute;
+    top: calc(100% + 0.35em);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.05em 0.35em;
+    border-radius: 0.25em;
+    background: var(--select);
+    color: var(--on-select);
+    font-size: 0.72em;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+}
+
+.hv-redline {
+  position: absolute;
+  border-left: 1px solid var(--redline);
+  color: var(--redline);
+  font-size: 0.75em;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    left: -0.3em;
+    width: 0.6em;
+    border-top: 1px solid var(--redline);
+  }
+
+  &::before {
+    top: 0;
+  }
+
+  &::after {
+    bottom: 0;
+  }
+
+  span {
+    position: absolute;
+    top: 50%;
+    left: 0.35em;
+    transform: translateY(-50%);
+    line-height: 1;
+  }
+
+  // Positions are in the redline's own em, which is 0.75 of the card's em.
+  &--padding {
+    top: 0;
+    left: calc(6em / 0.75);
+    height: calc(1.5em / 0.75);
+  }
+
+  &--gap {
+    top: calc(4.5em / 0.75);
+    left: calc(6em / 0.75);
+    height: calc(1em / 0.75);
+  }
+}
+
+// Code panel ------------------------------------------------------------
+
+.hv-tabs {
+  display: flex;
+  gap: 1em;
+
+  &__tab {
+    padding-bottom: 0.2em;
+    border-bottom: 1px solid transparent;
+
+    &.is-current {
+      border-bottom-color: var(--select);
+      color: var(--code-ink);
+    }
+  }
+}
+
+.hv-code {
+  margin: 0;
+  padding: 0.9em 0 1em;
+  overflow: hidden;
+  color: var(--code-ink);
+  font-family: var(--font-code);
+  font-size: 0.86em;
+  line-height: 1.62;
+
+  code {
+    display: block;
+    font: inherit;
+  }
+
+  &__line {
+    display: flex;
+    white-space: pre;
+  }
+
+  &__num {
+    flex: none;
+    width: 2.8em;
+    padding-right: 1em;
+    color: rgba(217, 221, 234, 0.3);
+    text-align: right;
+    user-select: none;
+  }
+
+  &__text {
+    display: block;
+  }
+
+  .t-tag {
+    color: #86a6ff;
+  }
+
+  .t-attr {
+    color: #c6aaff;
+  }
+
+  .t-str {
+    color: #7fdcb4;
+  }
+
+  .t-num {
+    color: #f4c77d;
+  }
+
+  .t-prop {
+    color: #86a6ff;
+  }
+
+  .t-punc {
+    color: rgba(217, 221, 234, 0.55);
+  }
+
+  .t-com {
+    color: rgba(217, 221, 234, 0.38);
+    font-style: italic;
+  }
+}
+
+.hv-panel--code.is-active .hv-code__text {
+  animation: type-line 0.45s steps(22, end) both;
+  animation-delay: calc(var(--i) * 70ms + 120ms);
+}
+
+// Render panel: the finished component ---------------------------------
+
+.hv-render {
+  padding: 1.6em;
+}
+
+.ui-card {
+  display: grid;
+  gap: 1em;
+  padding: 1.5em;
+  border: 1px solid var(--line);
+  border-radius: 0.75em;
+  background: var(--frame);
+  box-shadow: 0 0.6em 1.6em -1em rgba(22, 26, 38, 0.35);
+}
+
+.ui-avatar {
+  display: grid;
+  place-items: center;
+  width: 3em;
+  height: 3em;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--select), var(--component));
+  color: #fff;
+
+  span {
+    font-family: var(--font-display);
+    font-size: 1em;
+    font-weight: 700;
+  }
+}
+
+.ui-text {
+  display: grid;
+  gap: 0.15em;
+}
+
+.ui-name {
+  font-family: var(--font-display);
+  font-size: 1.15em;
+  font-weight: 650;
+  line-height: 1.2;
+}
+
+.ui-role {
+  color: var(--ink-2);
+  font-size: 0.9em;
+}
+
+.ui-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4em;
+
+  span {
+    padding: 0.25em 0.7em;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--frame-2);
+    color: var(--ink-2);
+    font-size: 0.78em;
+  }
+}
+
+.ui-button {
+  display: grid;
+  place-items: center;
+  height: calc(2.6em / 0.9);
+  border-radius: calc(0.55em / 0.9);
+  background: var(--select);
+  color: var(--on-select);
+  font-size: 0.9em;
+  font-weight: 600;
+}
+
+// Floating labels and the collaborator cursor --------------------------
+
+.hv-tag {
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  z-index: 6;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  padding: 0.3em 0.75em;
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  background: var(--frame);
+  box-shadow: var(--shadow-1);
+  color: var(--ink-2);
+  font-size: 0.82em;
+  font-weight: 500;
+  white-space: nowrap;
+  translate: calc(var(--px, 0) * var(--depth) * -1px) calc(var(--py, 0) * var(--depth) * -1px);
+
+  &::before {
+    content: '';
+    width: 0.45em;
+    height: 0.45em;
+    background: var(--component);
+    transform: rotate(45deg);
+  }
+}
+
+.hv-cursor {
+  --cx: 13%;
+  --cy: 17%;
+  position: absolute;
+  top: var(--cy);
+  left: var(--cx);
+  z-index: 8;
+  display: flex;
+  align-items: flex-start;
+  pointer-events: none;
+  transition:
+    top 1s $ease-in-out,
+    left 1s $ease-in-out;
+
+  &__arrow {
+    width: 1.5em;
+    height: 1.5em;
+    fill: var(--select);
+    stroke: #fff;
+    stroke-width: 1.2;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+  }
+
+  &__tag {
+    margin: 1.1em 0 0 -0.3em;
+    padding: 0.2em 0.55em;
+    border-radius: 0.35em;
+    background: var(--select);
+    color: var(--on-select);
+    font-size: 0.8em;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .hv[data-stage='develop'] & {
+    --cx: 60%;
+    --cy: 58%;
+  }
+
+  .hv[data-stage='experience'] & {
+    --cx: 40%;
+    --cy: 86%;
+  }
+}

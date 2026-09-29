@@ -1,0 +1,32 @@
+@use '../../styles/mixins' as *;
+
+.section-heading {
+  display: grid;
+  gap: 1.25rem;
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+
+  @include up(lg) {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    align-items: end;
+    column-gap: 4rem;
+  }
+
+  &__title {
+    @include display-type;
+    font-size: var(--fs-3xl);
+    max-width: 16ch;
+    text-wrap: balance;
+  }
+
+  &__lead {
+    max-width: 44ch;
+    color: var(--ink-2);
+    font-size: var(--fs-l);
+    line-height: 1.55;
+    text-wrap: pretty;
+  }
+
+  &--solo {
+    grid-template-columns: 1fr;
+  }
+}

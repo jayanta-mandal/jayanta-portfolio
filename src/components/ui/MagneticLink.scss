@@ -1,0 +1,95 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.btn {
+  --mx: 0px;
+  --my: 0px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: 3rem;
+  padding: 0.75rem 1.35rem;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  font-weight: 550;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  translate: var(--mx) var(--my);
+  transition:
+    translate 0.4s $ease-out,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.3s ease;
+
+  &__icon {
+    width: 1.15em;
+    height: 1.15em;
+    flex: none;
+  }
+
+  &--lg {
+    min-height: 3.75rem;
+    padding: 1rem 1.75rem;
+    font-size: 1.0625rem;
+    border-radius: 12px;
+  }
+
+  &--primary {
+    background: var(--select);
+    color: var(--on-select);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.18) inset, 0 10px 24px -14px var(--select);
+
+    @include hover {
+      background: color-mix(in srgb, var(--select) 88%, var(--ink));
+    }
+  }
+
+  &--secondary {
+    background: var(--frame);
+    border-color: var(--line-2);
+    color: var(--ink);
+
+    @include hover {
+      border-color: var(--select);
+      color: var(--select);
+    }
+  }
+
+  // Small format label next to the text, e.g. "PDF".
+  &__meta {
+    margin-left: 0.45em;
+    padding: 0.1em 0.4em;
+    border: 1px solid currentColor;
+    border-radius: 4px;
+    font-size: 0.68em;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    opacity: 0.7;
+    vertical-align: 0.12em;
+  }
+
+  &--outline-inverse {
+    background: transparent;
+    border-color: var(--inverse-line);
+    color: var(--inverse-ink);
+
+    @include hover {
+      border-color: var(--inverse-ink);
+      background: color-mix(in srgb, var(--inverse-ink) 8%, transparent);
+    }
+  }
+
+  &--inverse {
+    background: var(--inverse-ink);
+    color: var(--inverse-bg);
+
+    @include hover {
+      background: color-mix(in srgb, var(--inverse-ink) 86%, var(--inverse-bg));
+    }
+  }
+}

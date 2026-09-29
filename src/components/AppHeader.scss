@@ -1,0 +1,285 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.site-header {
+  position: fixed;
+  top: 0;
+  inset-inline: 0;
+  z-index: $z-header;
+  padding-top: env(safe-area-inset-top, 0px);
+  border-bottom: 1px solid transparent;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    backdrop-filter 0.3s ease;
+
+  &.is-scrolled {
+    background: color-mix(in srgb, var(--canvas) 80%, transparent);
+    border-bottom-color: var(--line);
+    backdrop-filter: saturate(1.4) blur(14px);
+    -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  }
+
+  &.is-open {
+    background: var(--canvas);
+    border-bottom-color: var(--line);
+  }
+
+  &__bar {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    height: $header-height;
+  }
+
+  &__tools {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+
+    @include up(lg) {
+      margin-left: 0;
+    }
+  }
+
+  // Scoped under the tools group so it outranks the generic .icon-button display.
+  &__tools &__menu-toggle {
+    @include up(lg) {
+      display: none;
+    }
+  }
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--ink);
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: -0.01em;
+
+  &__mark {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1.5px solid var(--select);
+    background: var(--frame);
+    color: var(--select);
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border: 1.5px solid var(--select);
+      background: var(--frame);
+    }
+
+    &::before {
+      top: -4px;
+      left: -4px;
+    }
+
+    &::after {
+      right: -4px;
+      bottom: -4px;
+    }
+  }
+
+  &__name {
+    font-size: 0.95rem;
+
+    // Very narrow phones: keep the name for assistive tech, show only the mark.
+    @media (max-width: 359.98px) {
+      @include visually-hidden;
+    }
+  }
+}
+
+.site-nav {
+  position: relative;
+  display: none;
+  margin-left: auto;
+
+  @include up(lg) {
+    display: block;
+  }
+
+  &__list {
+    display: flex;
+    gap: 0.15rem;
+  }
+
+  &__link {
+    display: block;
+    padding: 0.55rem 0.75rem;
+    border-radius: 8px;
+    color: var(--ink-2);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition:
+      color 0.2s ease,
+      background-color 0.2s ease;
+
+    @include hover {
+      color: var(--ink);
+      background: var(--select-soft);
+    }
+
+    &[aria-current] {
+      color: var(--ink);
+    }
+  }
+
+  &__indicator {
+    position: absolute;
+    left: 0;
+    bottom: 1px;
+    width: var(--w);
+    height: 2px;
+    border-radius: 2px;
+    background: var(--select);
+    transform: translateX(var(--x));
+    transition:
+      transform 0.45s $ease-out,
+      width 0.45s $ease-out,
+      opacity 0.2s ease;
+  }
+}
+
+.icon-button {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid var(--line-2);
+  border-radius: 10px;
+  background: var(--frame);
+  color: var(--ink-2);
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+
+  .icon {
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+
+  @include hover {
+    color: var(--ink);
+    border-color: var(--ink-3);
+  }
+
+  &[aria-pressed='true'] {
+    border-color: var(--redline);
+    background: var(--redline-soft);
+    color: var(--redline);
+  }
+}
+
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  padding-top: calc(env(safe-area-inset-top, 0px) + #{$header-height});
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background: var(--canvas);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.3s ease,
+    visibility 0s linear 0.3s;
+  overflow-y: auto;
+
+  .is-open & {
+    opacity: 1;
+    visibility: visible;
+    transition:
+      opacity 0.3s ease,
+      visibility 0s;
+  }
+
+  @include up(lg) {
+    display: none;
+  }
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    min-height: 100%;
+    padding-block: 2rem 2.5rem;
+  }
+
+  &__list {
+    display: grid;
+    border-top: 1px solid var(--line);
+  }
+
+  &__list li {
+    border-bottom: 1px solid var(--line);
+    opacity: 0;
+    transform: translateY(10px);
+    transition:
+      opacity 0.4s ease,
+      transform 0.5s $ease-out;
+    transition-delay: calc(var(--i) * 35ms);
+
+    .is-open & {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 0.9rem;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 7vw, 2.5rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+
+    &[aria-current] {
+      color: var(--select);
+    }
+
+    &[aria-current]::after {
+      content: '';
+      width: 0.5rem;
+      height: 0.5rem;
+      background: var(--select);
+      transform: rotate(45deg);
+    }
+  }
+
+  &__email {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: auto;
+    color: var(--ink-2);
+    text-decoration: none;
+
+    .icon {
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+  }
+}

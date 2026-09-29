@@ -1,0 +1,432 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.projects__filters {
+  margin-bottom: 1.75rem;
+}
+
+.projects {
+  display: grid;
+  gap: 1.25rem;
+
+  @include up(md) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  &__item {
+    min-width: 0;
+    animation: card-in 0.55s $ease-out both;
+    animation-delay: calc(var(--i, 0) * 60ms);
+
+    &--wide {
+      grid-column: 1 / -1;
+    }
+  }
+}
+
+.project {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  background: var(--frame);
+  transition:
+    transform 0.45s $ease-out,
+    box-shadow 0.45s ease,
+    border-color 0.3s ease;
+
+  @include hover {
+    transform: translateY(-4px);
+    border-color: var(--line-2);
+    box-shadow: var(--shadow-2);
+
+    .cover__browser {
+      transform: translateY(-3%);
+    }
+
+    .cover__phone {
+      transform: translateY(-9%) rotate(-2deg);
+    }
+  }
+
+  &--wide {
+    @include up(lg) {
+      flex-direction: row;
+
+      .cover {
+        flex: 1.1 1 0;
+        aspect-ratio: auto;
+        min-height: 26rem;
+      }
+
+      .project__body {
+        flex: 1 1 0;
+      }
+
+      .project__title {
+        font-size: var(--fs-2xl);
+      }
+
+      .project__highlights {
+        grid-template-columns: 1fr 1fr;
+        column-gap: 1.5rem;
+      }
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: clamp(1.35rem, 3vw, 2.25rem);
+  }
+
+  &__company {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-bottom: -0.75rem;
+    color: var(--ink-3);
+    font-size: var(--fs-s);
+    font-weight: 500;
+
+    &::before {
+      content: '';
+      width: 0.5rem;
+      height: 0.5rem;
+      background: var(--accent);
+      transform: rotate(45deg);
+    }
+  }
+
+  &__title {
+    font-size: var(--fs-xl);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  &__summary {
+    max-width: 60ch;
+    color: var(--ink-2);
+    text-wrap: pretty;
+  }
+
+  &__label {
+    margin-bottom: 0.65rem;
+    color: var(--ink-3);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+  }
+
+  &__highlights {
+    gap: 0.45rem;
+    font-size: var(--fs-s);
+  }
+
+  &__note {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+    color: var(--ink-3);
+    font-size: var(--fs-xs);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Cover artwork
+// ---------------------------------------------------------------------------
+
+.cover {
+  --tint: color-mix(in srgb, var(--accent) 12%, var(--frame-2));
+  --accent-soft: color-mix(in srgb, var(--accent) 22%, var(--frame));
+  position: relative;
+  flex: none;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  background-color: var(--tint);
+  background-image: radial-gradient(color-mix(in srgb, var(--accent) 22%, transparent) 1px, transparent 1.3px);
+  background-size: 16px 16px;
+
+  .project--wide & {
+    @include up(lg) {
+      border-bottom: 0;
+      border-right: 1px solid var(--line);
+    }
+  }
+
+  &__browser {
+    position: absolute;
+    top: 12%;
+    bottom: -8%;
+    left: 8%;
+    width: 76%;
+    border: 1px solid var(--line-2);
+    border-radius: 10px 10px 0 0;
+    background: var(--frame);
+    box-shadow: var(--shadow-1);
+    transition: transform 0.6s $ease-out;
+  }
+
+  &__chrome {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    height: 24px;
+    padding-inline: 10px;
+    border-bottom: 1px solid var(--line);
+
+    i {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--line-2);
+    }
+  }
+
+  &__url {
+    width: 38%;
+    height: 8px;
+    margin-left: 10px;
+    border-radius: 4px;
+    background: var(--frame-2);
+  }
+
+  &__screen {
+    height: calc(100% - 24px);
+    padding: 12px;
+  }
+
+  &__phone {
+    position: absolute;
+    right: 6%;
+    bottom: -10%;
+    width: 22%;
+    aspect-ratio: 9 / 18;
+    padding: 14px 7px 7px;
+    border: 1px solid var(--line-2);
+    border-radius: 16px;
+    background: var(--frame);
+    box-shadow: var(--shadow-2);
+    transition: transform 0.6s $ease-out;
+  }
+
+  &__notch {
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    width: 30%;
+    height: 4px;
+    border-radius: 4px;
+    background: var(--line-2);
+    transform: translateX(-50%);
+  }
+
+  &__phone-screen {
+    display: grid;
+    gap: 6px;
+    align-content: start;
+    height: 100%;
+  }
+}
+
+// Skeleton pieces
+.sk {
+  display: block;
+  border-radius: 4px;
+  background: var(--line);
+
+  &--line {
+    height: 6px;
+
+    &:nth-child(3n + 1) {
+      width: 92%;
+    }
+
+    &:nth-child(3n + 2) {
+      width: 70%;
+    }
+
+    &:nth-child(3n) {
+      width: 50%;
+    }
+  }
+
+  &--field {
+    height: 18px;
+    border: 1px solid var(--line-2);
+    background: transparent;
+  }
+
+  &--wide {
+    grid-column: 1 / -1;
+  }
+
+  &--cta {
+    width: 42%;
+    height: 16px;
+    background: var(--accent);
+  }
+
+  &--search {
+    height: 14px;
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    background: transparent;
+  }
+
+  &--thumb {
+    width: 26px;
+    height: 26px;
+    background: var(--accent-soft);
+  }
+
+  &--pill {
+    width: 30px;
+    height: 10px;
+    border-radius: 999px;
+    background: var(--accent-soft);
+  }
+
+  &--card {
+    height: 38px;
+    background: var(--accent-soft);
+  }
+
+  &--tile {
+    aspect-ratio: 4 / 3;
+    background: var(--frame-2);
+    border: 1px solid var(--line);
+  }
+
+  &--banner {
+    height: 34%;
+    background: linear-gradient(120deg, var(--accent), color-mix(in srgb, var(--accent) 45%, var(--frame)));
+  }
+
+  &--hero {
+    height: 30%;
+    min-height: 22px;
+    background: var(--accent-soft);
+  }
+}
+
+.cs {
+  display: grid;
+  gap: 10px;
+  height: 100%;
+  align-content: start;
+
+  &__stack {
+    display: grid;
+    gap: 6px;
+  }
+
+  &--app {
+    grid-template-columns: 22% 1fr;
+    gap: 12px;
+  }
+
+  &__side {
+    display: grid;
+    gap: 8px;
+    align-content: start;
+    padding-right: 10px;
+    border-right: 1px solid var(--line);
+  }
+
+  &__main {
+    display: grid;
+    gap: 12px;
+    align-content: start;
+  }
+
+  &__steps {
+    display: flex;
+    gap: 6px;
+
+    i {
+      flex: 1;
+      height: 4px;
+      border-radius: 4px;
+      background: var(--line);
+
+      &.is-done {
+        background: var(--accent);
+      }
+
+      &.is-now {
+        background: var(--accent-soft);
+      }
+    }
+  }
+
+  &__fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 10px;
+    align-items: center;
+    padding: 8px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+  }
+
+  &__cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  &__chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 6%;
+    height: 70px;
+    padding: 8px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+
+    i {
+      flex: 1;
+      border-radius: 3px 3px 0 0;
+      background: color-mix(in srgb, var(--accent) 60%, var(--frame));
+    }
+  }
+
+  &__topbar {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  &__tiles {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+
+    .sk--tile:first-child {
+      background: var(--accent-soft);
+    }
+  }
+
+  &--portal,
+  &--article {
+    grid-template-rows: auto;
+  }
+
+  &--portal .sk--banner,
+  &--article .sk--hero {
+    height: 56px;
+  }
+}

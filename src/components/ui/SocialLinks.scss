@@ -1,0 +1,38 @@
+@use '../../styles/mixins' as *;
+
+.social-links {
+  display: flex;
+  gap: 0.5rem;
+
+  &__item {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid var(--line-2);
+    border-radius: 10px;
+    background: var(--frame);
+    color: var(--ink-2);
+    transition:
+      color 0.2s ease,
+      border-color 0.2s ease,
+      transform 0.3s ease;
+
+    .icon {
+      width: 1.1rem;
+      height: 1.1rem;
+    }
+
+    @include hover {
+      color: var(--select);
+      border-color: var(--select);
+      transform: translateY(-2px);
+    }
+
+    &--pending {
+      border-style: dashed;
+      color: var(--ink-3);
+      cursor: help;
+    }
+  }
+}

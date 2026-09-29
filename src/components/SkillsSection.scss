@@ -1,0 +1,126 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.skills__filters {
+  margin-bottom: 1.75rem;
+}
+
+.skills {
+  display: grid;
+  gap: 1rem;
+
+  @include up(md) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include up(lg) {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.skill-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: clamp(1.25rem, 2.5vw, 1.75rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  background: var(--frame-2);
+  transition:
+    opacity 0.35s ease,
+    border-color 0.3s ease,
+    background-color 0.3s ease,
+    transform 0.4s $ease-out;
+
+  @include up(lg) {
+    grid-column: span var(--span);
+  }
+
+  // Tools spans the full row on tablets too.
+  @include up(md) {
+    &:last-child {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .has-focus & {
+    opacity: 0.38;
+  }
+
+  .has-focus &.is-focused {
+    opacity: 1;
+    border-color: var(--select);
+    background: var(--frame);
+    transform: translateY(-3px);
+  }
+
+  &__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  &__name {
+    font-size: var(--fs-xl);
+    letter-spacing: -0.02em;
+  }
+
+  &__count {
+    color: var(--ink-3);
+    font-size: var(--fs-s);
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__summary {
+    max-width: 40ch;
+    color: var(--ink-2);
+    font-size: var(--fs-s);
+  }
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-top: auto;
+    padding-top: 0.75rem;
+  }
+}
+
+.skill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.1rem;
+  padding: 0.3rem 0.8rem;
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  background: var(--frame);
+  color: var(--ink);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.25s $ease-out;
+
+  &::before {
+    content: '';
+    width: 0.4rem;
+    height: 0.4rem;
+    background: var(--component);
+    opacity: 0.45;
+    transform: rotate(45deg);
+    transition: opacity 0.2s ease;
+  }
+
+  @include hover {
+    border-color: var(--component);
+    color: var(--component);
+    transform: translateY(-2px);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+}

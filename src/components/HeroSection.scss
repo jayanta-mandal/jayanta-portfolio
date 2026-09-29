@@ -1,0 +1,169 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: calc(#{$header-height} + clamp(2.5rem, 6vw, 4.5rem)) clamp(3rem, 6vw, 5rem);
+
+  @include up(lg) {
+    min-height: 100svh;
+  }
+
+  &__grid {
+    display: grid;
+    gap: clamp(3.5rem, 7vw, 5rem);
+    align-items: center;
+
+    @include up(lg) {
+      grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
+      gap: clamp(3rem, 5vw, 5.5rem);
+    }
+  }
+
+  &__copy {
+    min-width: 0;
+  }
+
+  &__enter {
+    animation: enter-up 0.8s $ease-out both;
+  }
+
+  &__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.4rem 0.85rem 0.4rem 0.7rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--frame);
+    color: var(--ink-2);
+    font-size: var(--fs-s);
+    line-height: 1.3;
+  }
+
+  &__name {
+    display: grid;
+    gap: 0.35rem;
+    margin-top: 1.75rem;
+    font-size: var(--fs-xl);
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  &__roles {
+    color: var(--ink-3);
+    font-family: var(--font-body);
+    font-size: var(--fs-s);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  &__headline-frame {
+    margin-block: 3rem 3.25rem;
+
+    .selection__box {
+      animation: frame-draw 0.6s $ease-out 0.75s both;
+    }
+  }
+
+  &__headline {
+    @include display-type;
+    max-width: 12ch;
+    font-size: var(--fs-hero);
+    font-weight: 650;
+    letter-spacing: -0.035em;
+    line-height: 0.98;
+    text-wrap: balance;
+  }
+
+  &__tagline {
+    font-size: var(--fs-l);
+    font-weight: 550;
+    letter-spacing: -0.01em;
+  }
+
+  &__summary {
+    max-width: 50ch;
+    margin-top: 0.75rem;
+    color: var(--ink-2);
+    text-wrap: pretty;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2.25rem;
+
+    @include down(sm) {
+      .btn {
+        flex: 1 1 100%;
+      }
+    }
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1rem;
+    margin-top: 1.75rem;
+    animation-delay: 0.74s;
+  }
+
+  &__meta-divider {
+    width: 1px;
+    height: 1.75rem;
+    background: var(--line-2);
+
+    // On narrow screens the CV link wraps to its own row, where a divider would dangle.
+    @include down(sm) {
+      display: none;
+    }
+  }
+
+  &__cv {
+    min-height: 2.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  &__visual {
+    min-width: 0;
+  }
+
+  &__scroll {
+    position: absolute;
+    left: 50%;
+    bottom: 1.5rem;
+    display: none;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    color: var(--ink-3);
+    transform: translateX(-50%);
+    transition:
+      color 0.2s ease,
+      border-color 0.2s ease;
+
+    .icon {
+      width: 1rem;
+      height: 1rem;
+    }
+
+    @include hover {
+      color: var(--select);
+      border-color: var(--select);
+    }
+
+    @media (min-width: 1024px) and (min-height: 820px) {
+      display: grid;
+    }
+  }
+}

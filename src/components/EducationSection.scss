@@ -1,0 +1,91 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.section--compact .section__frame {
+  padding-block: clamp(1.5rem, 4vw, 3rem);
+}
+
+.education {
+  display: grid;
+  gap: 1.25rem;
+
+  @include up(lg) {
+    grid-template-columns: minmax(12rem, 0.5fr) minmax(0, 1.5fr);
+    gap: 3rem;
+  }
+
+  &__title {
+    font-size: var(--fs-xl);
+    letter-spacing: -0.02em;
+  }
+
+  &__list {
+    display: grid;
+  }
+
+  &__item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'period score'
+      'main main';
+    gap: 0.35rem 1rem;
+    padding-block: 1rem;
+    border-top: 1px solid var(--line);
+
+    &:last-child {
+      border-bottom: 1px solid var(--line);
+    }
+
+    @include up(md) {
+      grid-template-columns: 8rem minmax(0, 1fr) auto;
+      grid-template-areas: 'period main score';
+      align-items: baseline;
+    }
+  }
+
+  &__period {
+    grid-area: period;
+    color: var(--ink-3);
+    font-size: var(--fs-s);
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__main {
+    grid-area: main;
+    min-width: 0;
+  }
+
+  &__qualification {
+    font-family: var(--font-body);
+    font-size: var(--fs-base);
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: 1.4;
+  }
+
+  &__field {
+    font-weight: 400;
+    color: var(--ink-2);
+  }
+
+  &__institution {
+    color: var(--ink-2);
+    font-size: var(--fs-s);
+  }
+
+  &__location {
+    color: var(--ink-3);
+  }
+
+  &__score {
+    grid-area: score;
+    padding: 0.1rem 0.6rem;
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    color: var(--ink-2);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+}

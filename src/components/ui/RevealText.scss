@@ -1,0 +1,26 @@
+@use '../../styles/variables' as *;
+
+.reveal-text__word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+}
+
+.reveal-text__inner {
+  display: inline-block;
+  transform: translateY(108%);
+  transition: transform 0.9s $ease-out;
+  transition-delay: calc(var(--i, 0) * 55ms);
+}
+
+.reveal-text.is-visible .reveal-text__inner {
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-text__inner {
+    transform: none;
+  }
+}

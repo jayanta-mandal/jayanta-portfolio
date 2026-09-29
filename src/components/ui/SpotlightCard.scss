@@ -1,0 +1,28 @@
+@use '../../styles/mixins' as *;
+
+.spotlight {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(
+      420px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+      var(--select-soft),
+      transparent 65%
+    );
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover::before {
+      opacity: 1;
+    }
+  }
+}

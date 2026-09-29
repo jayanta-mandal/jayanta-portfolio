@@ -1,0 +1,97 @@
+import type { ExperienceEntry } from '../types/experience';
+
+export const experience: ExperienceEntry[] = [
+  {
+    id: 'live-line-web',
+    role: 'Web Developer',
+    company: 'Live Line Web',
+    start: 'July 2016',
+    end: 'March 2018',
+    yearRange: '2016 – 2018',
+    focus: ['Web development', 'Responsive interfaces', 'HTML', 'CSS', 'Frontend development'],
+  },
+  {
+    id: 'brandsum',
+    role: 'Web Developer',
+    company: 'Brandsum Tech Solution Pvt. Ltd.',
+    start: 'April 2018',
+    end: 'November 2019',
+    yearRange: '2018 – 2019',
+    focus: [
+      'Responsive websites',
+      'Bootstrap',
+      'jQuery',
+      'HTML5',
+      'CSS3',
+      'Accessibility',
+      'Government of West Bengal project',
+      'WordPress',
+    ],
+  },
+  {
+    id: 'navigator',
+    role: 'Senior Web Designer',
+    company: 'Navigator Software Pvt. Ltd.',
+    start: 'June 2020',
+    end: 'March 2022',
+    yearRange: '2020 – 2022',
+    focus: [
+      'UI development',
+      'Responsive applications',
+      'React',
+      'Angular',
+      'Angular Material',
+      'UI performance',
+      'Design-to-code implementation',
+    ],
+  },
+  {
+    id: 'anandpushp',
+    role: 'UI/UX Developer',
+    company: 'Anandpushp Technologies Pvt. Ltd.',
+    start: 'May 2022',
+    end: 'July 2025',
+    yearRange: '2022 – 2025',
+    focus: [
+      'React.js',
+      'Next.js',
+      'Material UI',
+      'Responsive web applications',
+      'Reusable UI components',
+      'UI/UX implementation',
+    ],
+  },
+  {
+    id: 'v2-solutions',
+    role: 'UI/UX Developer',
+    company: 'V2 Solutions Pvt. Ltd.',
+    payroll: 'eLabs Infotech Pvt. Ltd.',
+    start: 'July 2025',
+    end: 'Present',
+    yearRange: '2025 – Present',
+    current: true,
+    focus: [
+      'Front-End development',
+      'Vue.js',
+      'TypeScript',
+      'SCSS/SASS',
+      'Pixel-perfect UI implementation',
+      'Figma/Zeplin conversion',
+      'Reusable UI components',
+      'E2E testing',
+      'Cross-browser testing',
+      'Functional testing',
+      'Production support',
+      'Agile/Scrum collaboration',
+    ],
+  },
+];
+
+export const roleEvolution: string[] = [
+  'Web Developer',
+  'Senior Web Designer',
+  'UI/UX Developer',
+  'UI/UX & Front-End Developer',
+];
+
+export const currentRole = experience.find((entry) => entry.current) ?? experience[experience.length - 1];

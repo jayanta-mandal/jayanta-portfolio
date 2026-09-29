@@ -1,0 +1,225 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.workflow {
+  display: grid;
+  gap: 1.25rem;
+
+  @include up(lg) {
+    grid-template-columns: minmax(16rem, 0.8fr) minmax(0, 1.6fr);
+    gap: 2rem;
+  }
+
+  &__tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+
+    @include up(md) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    @include up(lg) {
+      grid-template-columns: 1fr;
+      gap: 0.35rem;
+    }
+  }
+
+  &__tab {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    min-height: 3rem;
+    padding: 0.65rem 0.9rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-s);
+    background: var(--frame);
+    color: var(--ink-2);
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    transition:
+      background-color 0.25s ease,
+      border-color 0.25s ease,
+      color 0.25s ease;
+
+    @include hover {
+      border-color: var(--line-2);
+      color: var(--ink);
+    }
+
+    &[aria-selected='true'] {
+      border-color: var(--select);
+      background: var(--select-soft);
+      color: var(--ink);
+
+      .workflow__tab-number {
+        background: var(--select);
+        color: var(--on-select);
+      }
+    }
+  }
+
+  &__tab-number {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 1.9rem;
+    height: 1.9rem;
+    border-radius: 50%;
+    background: var(--frame-2);
+    color: var(--ink-3);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    transition:
+      background-color 0.25s ease,
+      color 0.25s ease;
+  }
+
+  &__tab-title {
+    min-width: 0;
+    font-size: var(--fs-s);
+  }
+
+  &__panel {
+    display: flex;
+    flex-direction: column;
+    min-height: 20rem;
+    padding: clamp(1.5rem, 4vw, 2.75rem);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+    background:
+      radial-gradient(var(--canvas-dot) 1px, transparent 1.3px) 0 0 / 18px 18px,
+      var(--frame-2);
+  }
+
+  &__content {
+    animation: enter-up 0.45s $ease-out both;
+  }
+
+  &__panel-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: clamp(1.5rem, 4vw, 3rem);
+  }
+
+  &__number {
+    @include display-type;
+    font-size: clamp(3.5rem, 2rem + 6vw, 6.5rem);
+    line-height: 0.85;
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--select);
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: var(--radius-m);
+    background: var(--select);
+    color: var(--on-select);
+
+    .icon {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
+
+  &__title {
+    @include display-type;
+    font-size: var(--fs-2xl);
+  }
+
+  &__text {
+    max-width: 44ch;
+    margin-top: 0.75rem;
+    color: var(--ink-2);
+    font-size: var(--fs-l);
+    line-height: 1.55;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-top: auto;
+    padding-top: 2rem;
+  }
+
+  &__progress {
+    display: grid;
+    flex: 1;
+    gap: 0.5rem;
+    max-width: 18rem;
+  }
+
+  &__progress-label {
+    color: var(--ink-3);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+  }
+
+  &__progress-bar {
+    position: relative;
+    height: 4px;
+    border-radius: 4px;
+    background: var(--line);
+    overflow: hidden;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--select);
+      transform: scaleX(var(--step));
+      transform-origin: left;
+      transition: transform 0.45s $ease-out;
+    }
+  }
+
+  &__nav {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  &__arrow {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid var(--line-2);
+    border-radius: 50%;
+    background: var(--frame);
+    color: var(--ink);
+    cursor: pointer;
+    transition:
+      background-color 0.25s ease,
+      color 0.25s ease,
+      border-color 0.25s ease;
+
+    .icon {
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+
+    @include hover {
+      &:not(:disabled) {
+        border-color: var(--select);
+        background: var(--select);
+        color: var(--on-select);
+      }
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+}

@@ -1,0 +1,65 @@
+@use 'sass:map';
+@use 'variables' as *;
+
+@mixin up($bp) {
+  @media (min-width: map.get($breakpoints, $bp)) {
+    @content;
+  }
+}
+
+@mixin down($bp) {
+  @media (max-width: (map.get($breakpoints, $bp) - 0.02px)) {
+    @content;
+  }
+}
+
+/** Hover styles only for devices that can actually hover. */
+@mixin hover {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @content;
+    }
+  }
+}
+
+@mixin motion-ok {
+  @media (prefers-reduced-motion: no-preference) {
+    @content;
+  }
+}
+
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
+
+@mixin visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@mixin display-type {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-weight: 600;
+  letter-spacing: -0.028em;
+  line-height: 1.02;
+}
+
+/** Figma-style selection handles on the four corners of a positioned element. */
+@mixin corner-handles($size: 7px, $color: var(--select)) {
+  background-image:
+    linear-gradient($color, $color), linear-gradient($color, $color), linear-gradient($color, $color),
+    linear-gradient($color, $color);
+  background-repeat: no-repeat;
+  background-size: $size $size;
+  background-position: 0 0, 100% 0, 0 100%, 100% 100%;
+}
