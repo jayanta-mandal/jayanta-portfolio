@@ -1,4 +1,3 @@
-import { useCallback, useEffect, useState } from 'react';
 import { AboutSection } from './components/AboutSection';
 import { AppFooter } from './components/AppFooter';
 import { AppHeader } from './components/AppHeader';
@@ -16,26 +15,9 @@ import { WorkflowSection } from './components/WorkflowSection';
 import { useActiveSection } from './hooks/useActiveSection';
 
 /** Ignore the grid shortcut while the visitor is typing or using another shortcut. */
-function isShortcutTarget(event: KeyboardEvent): boolean {
-  if (event.metaKey || event.ctrlKey || event.altKey || event.repeat) return false;
-  const target = event.target as HTMLElement | null;
-  if (!target) return true;
-  return !(target.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName));
-}
 
 export default function App() {
   const activeSection = useActiveSection('home');
-  const [gridVisible, setGridVisible] = useState(false);
-
-  const toggleGrid = useCallback(() => setGridVisible((visible) => !visible), []);
-
-  useEffect(() => {
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key.toLowerCase() === 'g' && isShortcutTarget(event)) toggleGrid();
-    };
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [toggleGrid]);
 
   return (
     <>
@@ -43,7 +25,7 @@ export default function App() {
         Skip to content
       </a>
 
-      <AppHeader activeSection={activeSection} gridVisible={gridVisible} onToggleGrid={toggleGrid} />
+      <AppHeader activeSection={activeSection} />
 
       <main id="main" tabIndex={-1}>
         <HeroSection />

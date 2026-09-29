@@ -57,8 +57,8 @@ export const contact = {
 export const resume = {
   label: 'Download CV',
   format: 'PDF',
-  fileName: 'JayantaMandal_Resume.pdf',
-  href: `${import.meta.env.BASE_URL}JayantaMandal_Resume.pdf`,
+  fileName: 'JayantaMandal_CV.pdf',
+  href: `${import.meta.env.BASE_URL}JayantaMandal_CV.pdf`,
 };
 
 export const conversationHref = `${contact.email.href}?subject=${encodeURIComponent('Project enquiry')}`;

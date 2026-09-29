@@ -80,7 +80,7 @@ The hero, footer and contact section pick it up automatically.
 
 ### Updating the CV
 
-The "Download CV" buttons (hero and contact section) serve `public/JayantaMandal_Resume.pdf`. To update it, replace that file with a new PDF using the same name. To use a different file name or label, edit `resume` in `src/data/site.ts`.
+The "Download CV" buttons (hero and contact section) serve `public/JayantaMandal_CV.pdf`. To update it, replace that file with a new PDF using the same name. To use a different file name or label, edit `resume` in `src/data/site.ts`.
 
 ### Adding a role
 

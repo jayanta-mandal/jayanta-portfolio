@@ -7,8 +7,6 @@ import './AppHeader.scss';
 
 interface AppHeaderProps {
   activeSection: string;
-  gridVisible: boolean;
-  onToggleGrid: () => void;
 }
 
 interface IndicatorState {
@@ -17,7 +15,7 @@ interface IndicatorState {
   visible: boolean;
 }
 
-export function AppHeader({ activeSection, gridVisible, onToggleGrid }: AppHeaderProps) {
+export function AppHeader({ activeSection }: AppHeaderProps) {
   const scrolled = useScrolled(24);
   const [menuOpen, setMenuOpen] = useState(false);
   const [indicator, setIndicator] = useState<IndicatorState>({ x: 0, width: 0, visible: false });
